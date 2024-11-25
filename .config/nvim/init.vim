@@ -13,14 +13,14 @@ set encoding=UTF-8
 set completeopt-=preview " For No Previews
 set clipboard+=unnamedplus
 set background=dark   
-highlight Normal ctermbg=none 
-highlight Normal guibg=none   
-highlight NonText guibg=none   
-highlight StatusLine guibg=none 
-highlight VertSplit guibg=none highlight Normal ctermbg=none  
+" highlight Normal ctermbg=none guibg=none 
+" highlight Normal guibg=none   
+" highlight NonText guibg=none   
+" highlight StatusLine guibg=none 
+" highlight VertSplit guibg=none highlight Normal ctermbg=none  
 
 " Python Host Program Setup
-let g:python3_host_prog = '~/miniconda3/bin/python3'
+let g:python3_host_prog = '/home/San/miniconda3/bin/python'
 
 function! SetPythonHostProg()
     let l:python_path = system('which python3')
@@ -109,6 +109,9 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'jupyter-vim/jupyter-vim'
 Plug 'goerz/jupytext.vim'
 Plug 'folke/which-key.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+
 
 " New plugins
 Plug 'neovim/nvim-lspconfig'
@@ -120,10 +123,10 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'hkupty/iron.nvim'
 Plug 'vim-test/vim-test'
 Plug 'glepnir/lspsaga.nvim'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
+" Plug 'hrsh7th/nvim-cmp'
+" Plug 'hrsh7th/cmp-nvim-lsp'
+" Plug 'hrsh7th/cmp-buffer'
+" Plug 'hrsh7th/cmp-path'
 Plug 'L3MON4D3/LuaSnip'
 
 call plug#end()
@@ -239,41 +242,41 @@ let g:UltiSnipsJumpForwardTrigger = '<C-n>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-p>'
 
 
-lua << EOF
-local cmp = require'cmp'
+" lua << EOF
+" local cmp = require'cmp'
 
-cmp.setup({
-  mapping = {
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      else
-        fallback()  -- Insert a tab character if nothing is visible
-      end
-    end, { 'i', 's' }),  -- Works in insert and select modes
+" cmp.setup({
+"   mapping = {
+"     ['<Tab>'] = cmp.mapping(function(fallback)
+"       if cmp.visible() then
+"         cmp.select_next_item()
+"       else
+"         fallback()  -- Insert a tab character if nothing is visible
+"       end
+"     end, { 'i', 's' }),  -- Works in insert and select modes
 
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        fallback()  -- Insert a tab character if nothing is visible
-      end
-    end, { 'i', 's' }),
+"     ['<S-Tab>'] = cmp.mapping(function(fallback)
+"       if cmp.visible() then
+"         cmp.select_prev_item()
+"       else
+"         fallback()  -- Insert a tab character if nothing is visible
+"       end
+"     end, { 'i', 's' }),
 
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),  -- Confirm selection
+"     ['<CR>'] = cmp.mapping.confirm({ select = true }),  -- Confirm selection
 
-    ['<C-Space>'] = cmp.mapping.complete(),  -- Trigger completion
-  },
+"     ['<C-Space>'] = cmp.mapping.complete(),  -- Trigger completion
+"   },
 
-  sources = {
-    { name = 'nvim_lsp' },  -- LSP source
-    { name = 'buffer' },    -- Buffer source
-    { name = 'path' },      -- Path source
-  },
+"   sources = {
+"     { name = 'nvim_lsp' },  -- LSP source
+"     { name = 'buffer' },    -- Buffer source
+"     { name = 'path' },      -- Path source
+"   },
 
-  -- Additional options can be set here
-})
-EOF
+"   -- Additional options can be set here
+" })
+" EOF
             
 
 
