@@ -1,0 +1,20 @@
+configuration {
+    font: "JetBrainsMono Nerd Font Medium 13";
+    display-drun: "San's Applications:";
+    drun-display-format: "{icon} {name}";
+    display-window: "San's Windows";
+    show-icons: true;
+    icon-theme: "Papirus";
+}
+
+* {
+    background: #11121D;
+    bg-alt: #444b6a;
+    foreground: #ffffff;
+    fg-alt: #787c99;
+    border-color: #444444;
+    selected-normal-background: #444444;
+    selected-normal-foreground: #ffffff;
+    selected-active-background: #5e81ac;
+    selected-active-foreground: #ffffff;
+}

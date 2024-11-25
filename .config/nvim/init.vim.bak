@@ -1,0 +1,204 @@
+:set number
+:set relativenumber
+:set autoindent
+:set tabstop=4
+:set shiftwidth=4
+:set smarttab
+:set softtabstop=4
+:set mouse=a
+:set hlsearch
+
+
+
+function! SetPythonHostProg()
+  " Get the Python executable path from the current environment
+  let l:python_path = system('which python3')
+  " Remove trailing newlines and other whitespace
+  let l:python_path = substitute(l:python_path, '\n', '', 'g')
+  let l:python_path = substitute(l:python_path, '\r', '', 'g')
+  " Check if the path is not empty
+  if l:python_path != ''
+    let g:python3_host_prog = l:python_path
+  endif
+endfunction
+
+" Call the function to set the Python interpreter on VimEnter
+autocmd VimEnter * call SetPythonHostProg()
+
+" Also set Python path when changing directories
+autocmd DirChanged * call SetPythonHostProg()
+
+" Ensure g:python3_host_prog is set before using it
+if exists('g:python3_host_prog')
+  let g:UltiSnipsPythonPath = g:python3_host_prog
+endif
+
+
+call plug#begin()
+
+Plug 'http://github.com/tpope/vim-surround' " Surrounding ysw)
+Plug 'https://github.com/preservim/nerdtree' " NerdTree
+Plug 'https://github.com/tpope/vim-commentary' " For Commenting gcc & gc
+Plug 'https://github.com/vim-airline/vim-airline' " Status bar
+Plug 'https://github.com/lifepillar/pgsql.vim' " PSQL Pluging needs :SQLSetType pgsql.vim
+Plug 'https://github.com/ap/vim-css-color' " CSS Color Preview
+Plug 'https://github.com/rafi/awesome-vim-colorschemes' " Retro Scheme
+Plug 'https://github.com/neoclide/coc.nvim'  " Auto Completion
+Plug 'https://github.com/ryanoasis/vim-devicons' " Developer Icons
+" Plug 'https://github.com/tc50cal/vim-terminal' " Vim Terminal
+Plug 'https://github.com/preservim/tagbar' " Tagbar for code navigation
+Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
+Plug 'jiangmiao/auto-pairs' " Auto-close brackets, quotes, etc.
+Plug 'honza/vim-snippets' " Code snippets
+Plug 'SirVer/ultisnips' " Snippet engine
+Plug 'neoclide/coc.nvim' " Auto completion and more
+Plug 'sheerun/vim-polyglot'
+Plug 'dense-analysis/ale'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'psf/black', { 'do': 'npm install' }
+Plug 'tell-k/vim-autopep8'
+Plug 'jupyter-vim/jupyter-vim'
+Plug 'goerz/jupytext.vim'
+Plug 'folke/which-key.nvim'
+" Plug  'vim/vim-tutor'
+Plug 'neovim/nvim-lspconfig' " LSP Config - Python LSP Server
+" Debugger - nvim-dap for Python
+Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap-python'
+
+" File Explorer
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+" REPL Integration
+Plug 'hkupty/iron.nvim'
+
+" Testing Integration
+Plug 'vim-test/vim-test'
+
+" LSP UI Enhancements (Optional)
+Plug 'glepnir/lspsaga.nvim'
+
+" Completion and Snippets (Optional)
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'L3MON4D3/LuaSnip'
+
+call plug#end()
+
+set encoding=UTF-8
+lua << EOF
+require("which-key").setup {
+  timeout = true,
+  timeoutlen = 500, -- Time in milliseconds
+}
+
+EOF
+
+if exists('g:python3_host_prog')
+  let g:UltiSnipsPythonPath = g:python3_host_prog
+endif
+
+
+
+nnoremap <C-f> :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-l> :call CocActionAsync('jumpDefinition')<CR>
+
+nmap <F8> :TagbarToggle<CR>
+" nnoremap <C-j> :rightbelow vsplit | term
+
+
+:set completeopt-=preview " For No Previews
+
+:colorscheme molokai
+
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
+
+" --- Just Some Notes ---
+" :PlugClean :PlugInstall :UpdateRemotePlugins
+"
+" :CocInstall coc-python
+" :CocInstall coc-clangd
+" :CocInstall coc-snippets
+" :CocCommand snippets.edit... FOR EACH FILE TYPE
+
+" air-line
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+
+" Set default Python3 host program (Conda base environment)
+
+let g:python3_host_prog = $CONDA_PREFIX . '/bin/python'
+
+" Autocmd to detect and switch to the project-specific Conda environment
+augroup CondaEnv
+    autocmd!
+    autocmd BufEnter * call SwitchCondaEnv()
+augroup END
+
+" Function to switch to the project's Conda environment
+function! SwitchCondaEnv()
+    " Check for environment.yml or .conda_env file
+    if filereadable("environment.yml")
+        let l:conda_env = system('conda env list | grep \* | awk \'{print $1}\'')
+        let g:python3_host_prog = trim(system('conda run -n ' . l:conda_env . ' which python'))
+    endif
+endfunction
+
+inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
+
+" LSP Settings
+lua << EOF
+local lspconfig = require('lspconfig')
+lspconfig.pyright.setup{}
+EOF
+
+" nvim-dap settings for Python
+lua << EOF
+require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+EOF
+
+" Set up REPL with iron.nvim
+let g:iron_repl_open_cmd = 'belowright split'
+
+" nvim-tree setup
+lua << EOF
+require('nvim-tree').setup{}
+EOF
+
+" Telescope setup
+lua << EOF
+require('telescope').setup{}
+EOF
+
+" gitsigns setup
+lua << EOF
+require('gitsigns').setup{}
+EOF
+
+lua << EOF
+require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+EOF
+
+" vim-test settings
+let test#strategy = 'neovim'

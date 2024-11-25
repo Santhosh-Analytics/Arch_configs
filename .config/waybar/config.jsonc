@@ -1,0 +1,340 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
+    "height": 25,
+//    "width": 1200, // Waybar width
+    "spacing": 3, // Gaps between modules (4px)
+    "mod": "dock",
+     "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "reload_style_on_change": true,
+    // Choose the order of the modules
+    "modules-left": [
+        "user",
+        "hyprland/workspaces",
+      //  "hyprland/submap",
+        "disk",
+        "disk#1",
+        "disk#2",
+        "disk#3",
+        "power-profiles-daemon",
+       "temperature",
+        "backlight",
+//        "keyboard-state",
+        "pulseaudio",
+        "idle_inhibitor",
+        "custom/updates",
+     //   "tray",    //
+        "hyprland/window",
+    ],
+    "modules-center": [
+        
+    ],
+    "modules-right": [
+     //   "custom/notifications", //
+    //    "mpd", //
+        "custom/cliphist",
+        "cpu",
+        "memory",
+      //  "hyprland/language",
+        "battery",
+        "bluetooth",
+        "network",
+        "custom/power",
+        "clock"
+        // "user"
+
+    ],
+   //  Modules configuration
+     "hyprland/workspaces": {
+         "disable-scroll": true,
+         "all-outputs": true,
+         "warp-on-scroll": false,
+         "format": "{name}: {icon}",
+         "format-icons": {
+             "1": "",
+             "2": "",
+             "3": "",
+             "4": "",
+             "5": "",
+             "urgent": "",
+             "focused": "",
+             "default": ""
+         }
+     },
+     "user": {
+        "format": "{user} ",
+        "interval": 60,
+        "avatar": "/home/San/.config/waybar/arch.png",
+        "height": 40,
+        "width": 80,
+        "icon": true,
+        "open-path": "/home/San/",
+        "on-click": "/home/San/",
+      },
+     "hyprland/window": {
+         "format": "{title}",
+         "all-outputs": true
+     },
+     // "hyprland/submap": {
+     //    "format": "✌️ {}",
+     //    "max-length": 8,
+     //    "tooltip": false
+    // },
+     "custom/updates": {
+           // "format": "📦 {updates}",
+           "format": "{updates}",
+			"interval": 3600,
+			"return-type": "json",
+			"exec": "~/.config/waybar/check-updates.sh",
+			"exec-if": "exit 0",
+			"on-click": "echo 'Sans update'",
+			"signal": 8
+		},
+       "debug": true,
+        "disk": {"interval": 60, "format": "{percentage_free}%  {path}"},
+        "disk#1": {"interval": 60,
+            "format": "{percentage_free}%  E",
+            "path": "/run/media/E_Drive"
+           },
+        "disk#2":{"interval": 60,"format": "{percentage_free}%  D","path": "/run/media/Drive"},
+        "disk#3":{"interval": 60,"format": "{percentage_free}%  D1","path":"/run/media/Drive1"}, 
+      
+       "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
+    // "hyprland/mode": {
+    //     "format": "<span style=\"italic\">{}</span>"
+    // },
+    // "hyprland/scratchpad": {
+    //     "format": "{icon} {count}",
+    //     "show-empty": true,
+    //     "format-icons": ["", ""],
+    //     "tooltip": true,
+    //     "tooltip-format": "{app}: {title}"
+    // },
+ /*   "mpd": {
+        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+        "format-disconnected": "Disconnected ",
+        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+        "unknown-tag": "N/A",
+        "interval": 5,
+        "consume-icons": {
+            "on": " "
+        },
+        "random-icons": {
+            "off": "<span color=\"#f53c3c\"></span> ",
+            "on": " "
+        },
+        "repeat-icons": {
+            "on": " "
+        },
+        "single-icons": {
+            "on": "1 "
+        },
+        "state-icons": {
+            "paused": "",
+            "playing": ""
+        },
+        "tooltip-format": "MPD (connected)",
+        "tooltip-format-disconnected": "MPD (disconnected)"
+    },*/
+    "idle_inhibitor": {
+        "format": "{icon} ",
+        "format-icons": {
+            "activated": " A",
+            "deactivated": " D"
+        }
+    },
+
+  /*  "tray": {
+        "icon-size": 21,
+        "spacing": 10
+    },*/
+    "clock": {
+        "timezone": "Asia/Kolkata",
+    	"format": "{:%b %d   %I:%M %p}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%d-%m-%y}",
+        "font": "Fira Code:Regular:11",
+        "foreground": "#ffffff",
+        "background": "#000000",
+        "padding": 5,
+        "border": 1,
+        "border-color": "#cccccc",
+        "spacing": 5,
+        "align": "center"
+    },
+    "cpu": {
+        "format": "🖳 {usage}% ",
+	"interval": 10,
+        "tooltip": true
+    },
+    "memory": {
+        "format": "💾 {} 🧮 {swapPercentage}% ",
+        "exec": "~/.config/waybar/memory_hover.sh",
+        "return-type": "json",
+        "interval": 30,
+        "on-click": "~/.config/waybar/memory_hover.sh",
+        "states": {
+	    	"warning": 70,
+		    "critical": 85
+	            },
+        "tooltip": {
+            "command": "~/.config/waybar/memory_hover.sh",
+            "format": "{output}",
+            "max-width": 300
+        }
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+         "format-critical": "{temperatureC}°C {icon}",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{percent}% {icon}",
+        "format-icons": ["", "", "", "", "", "", "", "", ""]
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-full": "{capacity}% {icon}",
+        "format-charging": " {capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-alt": "{time} {icon}",
+        "max-length": 20,
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+
+    },
+    "battery#bat0": {
+        "bat": "BAT0"
+    },
+    "power-profiles-daemon": {
+      "format": "{icon}",
+      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+      "tooltip": true,
+      "format-icons": {
+        "default": "",
+        "performance": " P",
+        "balanced": " B",
+        "power-saver": " S"
+      }
+    },
+    "network": {
+        "interface": "wlp2s0", // (Optional) To force the use of this interface
+        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-ethernet": "{ipaddr}/{cidr} ",
+        "tooltip-format": "{ifname} via {gwaddr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "format-icons": "ss"
+    },
+   
+    "bluetooth": {
+        "controller": "F4:6A:DD:78:9D:08",  // Your Bluetooth controller
+        "format-bluetooth": "  {status } {icon} &#xf001; ",
+        "format-disabled": "🅱️ ",
+        "format-off": " {status} ", 
+        "format-on": " {status} ", 
+        "max-length": 40,
+        "format-connected": " {num_connections} connected  ",
+        "error": "❌",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "format-connected-battery": "{icon} {num_connections}",
+        "on-click": "bluetoothctl power on | bluetoothctl power off",
+        "on-click-right": "bash -c 'bluetoothctl connect 41:42:9C:B1:8A:0A && notify-send \"Bluetooth Connected\" || (bluetoothctl disconnect 41:42:9C:B1:8A:0A && notify-send \"Bluetooth Disconnected\")'"
+    },
+
+     "pulseaudio": {
+        "scroll-step": 1, // %, can be a float
+        "format": "📢 {volume}% {icon} {format_source}",
+       // "format-bluetooth": "{volume}% {icon} {format_source} {name} ❌",
+       // "format-bluetooth-muted": " {icon}{format_source}{name} ❌",
+        "format-muted": " 婢{format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""],
+            "on-click": "notify-send 'Right Click Works!'"
+        },   
+        
+        "on-click": "pavucontrol"
+    },
+        // "custom/media": {
+        // "format": "{icon} {}",
+        // "return-type": "json",
+        // "max-length": 40,
+        // "format-icons": {
+        //     "vlc": "",
+        //     "default": "🎜"
+        // },
+        // "escape": true,
+        // "exec": "home/San/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+    // },
+    "custom/power": {
+        "format" : " ⏻ ",
+		"tooltip": true,
+		"menu": "on-click",
+		"menu-file": "/home/San/.config/waybar/power_menu.xml", // Menu file in resources folder
+		"menu-actions": {
+			"shutdown": "shutdown",
+			"reboot": "reboot",
+			"suspend": "systemctl suspend",
+			"hibernate": "systemctl hibernate",
+		}
+    },
+   
+   "custom/notifications": {
+    "format": "{icon} {text}",
+    "format-icons": {
+        "notification": "Bell",
+        "none": "Zero",
+        "error": "⚠️"
+    },
+    "return-type": "json",
+    "exec-if": "which makoctl",
+    "exec": "python3 /home/San/.config/waybar/notifications.py 2>&1",
+    "on-click": "makoctl dismiss",
+    "on-click-right": "makoctl dismiss-all",
+    "interval": 1,
+    "tooltip": true
+}, 
+"custom/updates": {
+    "format": "{} {icon}",
+    "return-type": "json",
+    "format-icons": {
+        "has-updates": "󱍷",
+        "updated": "󰂪"
+    },
+    "on-click": "/home/San/.config/waybar/updates.sh",
+    "exec-if": "which waybar-module-pacman-updates && which yay",
+    "exec": "waybar-module-pacman-updates --interval-seconds 5 --network-interval-seconds 300; yay -Qu | wc -l"
+}
+
+}
+    

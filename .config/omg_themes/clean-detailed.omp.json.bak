@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "background": "#FFEB3B",
+          "foreground": "#000000",
+          "leading_diamond": "\ue0b2",
+          "style": "diamond",
+          "template": "{{ .Venv }}",
+          "trailing_diamond": "<transparent,#FFEB3B>\ue0b2</>",
+          "type": "venv"
+        }
+      ],
+      "type": "prompt"
+    }
+  ]
+}
+

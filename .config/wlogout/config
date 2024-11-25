@@ -1,0 +1,21 @@
+[layout]
+background =#ffffff
+button-background = #3c3836
+button-background-hover = #458588
+button-text = #ebdbb2
+button-text-hover = #ffffff
+text = #ebdbb2
+font = sans-serif 16
+button-size = 100
+button-margin = 10
+background-image = /home/san/Pictures/black.jpg fill
+
+
+
+[command]
+logout = swaymsg exit
+reboot = systemctl reboot
+shutdown = systemctl poweroff
+suspend = systemctl suspend
+lock =  swaylock
+

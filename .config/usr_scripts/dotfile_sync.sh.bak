@@ -1,0 +1,31 @@
+#!/bin/bash
+
+   SOURCE_DIR="$HOME/.config"
+   DEST_DIR="$HOME/.configs/.config"
+   LOG_FILE="$HOME/dotfile_sync.log"
+   EXCLUDE_FILE="/$HOME/.config/usr_scripts/exclude_list.txt"
+
+
+   log() {
+       echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOG_FILE"
+   }
+
+   log "Starting dotfile sync"
+
+   if [ ! -d "$SOURCE_DIR" ] || [ ! -d "$DEST_DIR" ]; then
+       log "Error: Source or destination directory does not exist."
+       exit 1
+   fi
+
+   # Use rsync to copy files, including those in subfolders
+rsync -av --delete \
+    --exclude-from="$EXCLUDE_FILE" \
+    "$SOURCE_DIR/" "$DEST_DIR/" >> "$LOG_FILE" 2>&1
+
+   # Git operations
+   cd "$DEST_DIR" || exit
+   git add .
+   git commit -m "Updated dotfiles $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE" 2>&1
+
+   log "Dotfile sync completed"
+   

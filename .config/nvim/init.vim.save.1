@@ -1,0 +1,194 @@
+" Basic Settings
+set number
+set relativenumber
+set autoindent
+set tabstop=4
+set shiftwidth=4
+set smarttab
+set softtabstop=4
+set mouse=a
+set hlsearch
+set encoding=UTF-8
+set completeopt-=preview " For No Previews
+
+" Python Host Program Setup
+function! SetPythonHostProg()
+  let l:python_path = system('which python3')
+  let l:python_path = substitute(l:python_path, '\n', '', 'g')
+  let l:python_path = substitute(l:python_path, '\r', '', 'g')
+  if l:python_path != ''
+    let g:python3_host_prog = l:python_path
+  endif
+endfunction
+
+autocmd VimEnter * call SetPythonHostProg()
+autocmd DirChanged * call SetPythonHostProg()
+
+if exists('g:python3_host_prog')
+  let g:UltiSnipsPythonPath = g:python3_host_prog
+endif
+
+" Conda Environment Setup
+let g:python3_host_prog = $CONDA_PREFIX . '/bin/python'
+
+augroup CondaEnv
+    autocmd!
+    autocmd BufEnter * call SwitchCondaEnv()
+augroup END
+
+function! SwitchCondaEnv()
+    if filereadable("environment.yml")
+        let l:conda_env = system('conda env list | grep \* | awk \'{print $1}\'')
+        let g:python3_host_prog = trim(system('conda run -n ' . l:conda_env . ' which python'))
+    endif
+endfunction
+
+" Plugins
+call plug#begin()
+
+" Existing plugins
+Plug 'http://github.com/tpope/vim-surround'
+Plug 'https://github.com/preservim/nerdtree'
+Plug 'https://github.com/tpope/vim-commentary'
+Plug 'https://github.com/vim-airline/vim-airline'
+Plug 'https://github.com/lifepillar/pgsql.vim'
+Plug 'https://github.com/ap/vim-css-color'
+Plug 'https://github.com/rafi/awesome-vim-colorschemes'
+Plug 'https://github.com/neoclide/coc.nvim', {'branch': 'release'}
+Plug 'https://github.com/ryanoasis/vim-devicons'
+Plug 'https://github.com/preservim/tagbar'
+Plug 'https://github.com/terryma/vim-multiple-cursors'
+Plug 'jiangmiao/auto-pairs'
+Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'sheerun/vim-polyglot'
+Plug 'dense-analysis/ale'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'psf/black', { 'do': 'npm install' }
+Plug 'tell-k/vim-autopep8'
+Plug 'jupyter-vim/jupyter-vim'
+Plug 'goerz/jupytext.vim'
+Plug 'folke/which-key.nvim'
+
+" New plugins
+Plug 'neovim/nvim-lspconfig'
+Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap-python'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'hkupty/iron.nvim'
+Plug 'vim-test/vim-test'
+Plug 'glepnir/lspsaga.nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'L3MON4D3/LuaSnip'
+
+call plug#end()
+
+" Color Scheme
+colorscheme molokai
+
+" Plugin Configurations
+" NERDTree
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
+
+" Airline
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+
+" Coc
+inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
+
+" Which-key
+lua << EOF
+require("which-key").setup {
+  timeout = true,
+  timeoutlen = 500,
+}
+EOF
+
+" LSP Configuration
+lua << EOF
+local lspconfig = require('lspconfig')
+lspconfig.pyright.setup{}
+EOF
+
+" Debugger Configuration
+lua << EOF
+require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+EOF
+
+" REPL Configuration
+let g:iron_repl_open_cmd = 'belowright split'
+
+" File Explorer Configuration
+lua << EOF
+require('nvim-tree').setup{}
+EOF
+
+" Telescope Configuration
+lua << EOF
+require('telescope').setup{}
+EOF
+
+" Git Integration Configuration
+lua << EOF
+require('gitsigns').setup{}
+EOF
+
+" Testing Configuration
+let test#strategy = 'neovim'
+
+" Key Mappings
+nnoremap <C-f> :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-l> :call CocActionAsync('jumpDefinition')<CR>
+nmap <F8> :TagbarToggle<CR>
+
+
+lua << EOF
+local cmp = require'cmp'
+cmp.setup({
+  mapping = {
+    ['<Tab>'] = cmp.mapping.select_next_item(), -- Move to the next suggestion
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(), -- Move to the previous suggestion
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Confirm the selected suggestion
+    ['<C-Space>'] = cmp.mapping.complete(), -- Trigger manual completion
+  }
+})
+EOF
+
+
+" Add new key mappings for added functionalities
+nnoremap <space>e :NvimTreeToggle<CR>
+nnoremap <space>f :Telescope find_files<CR>
+nnoremap <space>b :Telescope buffers<CR>
+nnoremap <space>d :lua require('dap').continue()<CR>
+nnoremap <space>t :TestNearest<CR>
+
+
+
+
+
+" Notes
+" :PlugClean :PlugInstall :UpdateRemotePlugins
+" :CocInstall coc-python
+" :CocInstall coc-clangd
+" :CocInstall coc-snippets
+" :CocCommand snippets.edit... FOR EACH FILE TYPE

@@ -1,0 +1,44 @@
+# Appearance
+font=Cascadia Code
+font-size=24
+image="/home/san/Pictures/Cheeta.jpg"
+scaling=fill
+
+# Indicator
+indicator-radius=100
+indicator-thickness=7
+indicator-caps-lock
+
+# Date and Time (uses default system date/time format)
+clock=true
+datestr=%a, %B %e
+timestr=%I:%M %p
+indicator-idle-visible
+
+# Colors
+key-hl-color=880033
+separator-color=00000000
+inside-color=00000099
+inside-clear-color=ffd20400
+inside-caps-lock-color=009ddc00
+inside-ver-color=d9d8d800
+inside-wrong-color=ee2e2400
+ring-color=231f20D9
+ring-clear-color=231f20D9
+ring-caps-lock-color=231f20D9
+ring-ver-color=231f20D9
+ring-wrong-color=231f20D9
+line-color=00000000
+line-clear-color=ffd204FF
+line-caps-lock-color=009ddcFF
+line-ver-color=d9d8d8FF
+line-wrong-color=ee2e24FF
+text-color=dededeff
+text-clear-color=ffd204ff
+text-caps-lock-color=009ddcff
+text-ver-color=d9d8d8ff
+text-wrong-color=ee2e24ff
+
+# Misc
+ignore-empty-password
+show-failed-attempts

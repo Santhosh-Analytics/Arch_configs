@@ -1,0 +1,137 @@
+// Config //
+configuration { 
+    font: "JetBrainsMono Nerd Font Medium 13";
+    modi: "drun,run,clipboard:cliphist list";
+    display-drun: "San's Applications :- ";
+    drun-display-format: "{icon} {name}";
+    display-window: "San's Windows :- ";
+    show-icons: true;
+    icon-theme: "Papirus";
+    display-run: "San's Run :- ";
+    run-display-format: "{icon} {name}";
+    display-clipboard: "Clip History :- ";
+    clipboard-display-format: "{icon} {name}";
+
+
+}
+
+@theme "~/.config/rofi/theme.rasi"
+
+
+// Main //
+window {
+    transparency:                "real";
+    fullscreen:                  false;
+    enabled:                     true;
+    cursor:                      "default";
+    spacing:                     0em;
+    padding:                     0em;
+    background-color:            @main-bg;
+    border-radius:               30px;
+}
+mainbox {
+    enabled:                     true;
+    spacing:                     0em;
+    padding:                     0em;
+    orientation:                 vertical;
+    children:                    ["listbox" ,"inputbar"];
+    background-color:            transparent;
+    border-radius:               30px;
+
+}
+
+
+
+inputbar {
+    enabled:                     true;
+    padding:                     0em;
+    spacing:                     0em;
+    background-color:            #000000;
+    text-color:                  #ffffff;
+    font:                        "JetBrainsMono Nerd Font Medium 13";
+    border-radius: 20px;
+
+}
+
+// Lists //
+listbox {
+    padding:                     0em;
+    spacing:                     0em;
+    orientation:                 horizontal;
+    children:                    [ "listview" ];
+    background-color:            transparent;
+    border-radius:               30px;
+
+}
+listview {
+    padding:                     1em 2em 2.5em 2em;
+    spacing:                     5px;
+    enabled:                     true;
+    columns:                     1;
+    cycle:                       true;
+    dynamic:                     false;
+    scrollbar:                   false;
+ /*   flow:                        horizontal; */
+    reverse:                     false;
+    fixed-height:                false;
+    fixed-columns:               true;
+    cursor:                      "default";
+    background-color:            transparent;
+    border-radius:               30px;
+
+}
+dummy {
+    padding:                     4em;
+    expand:                      false;
+    background-color:            transparent;
+    border-radius:               30px;
+
+}
+
+
+// Elements //
+element {
+    orientation:                 horizontal;
+    enabled:                     true;
+    spacing:                     1em;
+    padding:                     0em;
+    cursor:                      pointer;
+    background-color:            transparent;
+    border-radius:               30px;
+
+}
+element selected.normal {
+    background-color:            #8A2BE2;
+    text-color:                  #000000;
+    tet-color:			 #000000;
+    border-width: 8px;
+}
+element-icon {
+    cursor:                      inherit;
+    background-color:            transparent;
+}
+
+element-text {
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  #ffffff;
+}
+
+
+clipboard{
+    lines: 25;                   /* Number of rows to display */
+    scrollbar:true;             /* Enable scrollbar */
+    padding: 10px;               /* Add some padding */
+    element-height: 2em;     /*   Adjust height of each entry */
+    font: "monospace 12";        /* Adjust the font size for readability */
+    fixed-height: false;
+    children:                    ["inputbar"];
+    enabled: true;
+    expand: true;
+    padding: 1em;
+    background-color: transparent;
+    font: "JetBrainsMono Nerd Font Medium 13"; 
+
+}

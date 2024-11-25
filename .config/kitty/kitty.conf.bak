@@ -1,0 +1,6 @@
+# BEGIN_KITTY_THEME
+# Monokai Soda
+include current-theme.conf
+# END_KITTY_THEME
+#
+font_famliy MesloLGS Nerd Font
